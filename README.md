@@ -1,18 +1,24 @@
 # Contemporary
 
-An Obsidian theme, currently a blank scaffold — `theme.css` has every CSS
-variable commented out, so as-is it changes nothing. Fill it in incrementally.
+An Obsidian theme, built up one change at a
+time. See the header of `theme.css` for what's in so far.
+
+## Companion plugin
+
+The left sidebar's Files row gets a hover "..." menu (new note, new folder, sort order,
+expand/collapse...) from the **Contemporary Theme Settings** plugin. The theme works
+without it; the explorer just keeps its normal button row.
 
 ## Developing
 
-This folder already lives at `.obsidian/themes/Contemporary` inside the vault
-you're editing it from, so Obsidian picks it up automatically:
+This folder lives at `.obsidian/themes/Contemporary` inside the vault you edit it from,
+so Obsidian picks it up automatically:
 
 1. Settings → Appearance → Themes → select **Contemporary**.
-2. Edit `theme.css`, save, and reload Obsidian (`Cmd/Ctrl+R` via the command
-   palette's "Reload app without saving") to see changes.
-3. Toggle Settings → Appearance → Base color scheme between light/dark to
-   check both `.theme-light` and `.theme-dark` blocks.
+2. Uncheck Settings → Appearance → **Show ribbon** for the full effect.
+3. Edit `theme.css`, save, and reload Obsidian ("Reload app without saving" in the
+   command palette) to see changes.
+4. Check both light and dark under Settings → Appearance → Base color scheme.
 
 Reference for available variables: https://docs.obsidian.md/Reference/CSS+variables
 
@@ -28,8 +34,8 @@ git push -u origin main
 
 Once the theme is in a good state:
 
-1. Make sure `manifest.json` and `theme.css` are at the **root** of the repo
-   (they are, here) and `version` in `manifest.json` is bumped.
+1. Make sure `manifest.json` and `theme.css` are at the **root** of the repo (they are,
+   here) and `version` in `manifest.json` is bumped.
 2. Add a screenshot (`screenshot.png`, ~1024px wide) showing the theme in use.
 3. Fork [obsidianmd/obsidian-releases](https://github.com/obsidianmd/obsidian-releases)
    and add an entry to `community-css-themes.json`:
@@ -44,8 +50,8 @@ Once the theme is in a good state:
    }
    ```
 
-4. Open a PR against `obsidian-releases`. The bundled bot checks your repo
-   structure automatically (manifest fields, license, root-level files).
-5. Add a `LICENSE` file (MIT included here) — required for submission.
+4. Open a PR against `obsidian-releases`. The bundled bot checks your repo structure
+   automatically (manifest fields, license, root-level files).
+5. `LICENSE` (MIT) is included, which is required for submission.
 
 Full guidelines: https://docs.obsidian.md/Themes/App+themes/Submit+your+theme

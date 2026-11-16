@@ -2,81 +2,139 @@
 Contemporary theme for Obsidian
 https://github.com/jsmorabito/obsidian-contemporary
 
-Scaffold only — every variable below is commented out so the theme is a
-no-op until you uncomment and set values. Variables are grouped to match
-Obsidian's own CSS variable reference (https://docs.obsidian.md/Reference/CSS+variables).
+Built up one change at a time.
+Written against Obsidian's own CSS variables and selectors (checked against 1.9.x).
 
-Structure:
-  .theme-light  -> overrides applied only in light mode
-  .theme-dark   -> overrides applied only in dark mode
-  body          -> overrides applied in both modes
+Changes so far:
+  1. Pill tabs
+  2. Left sidebar: Files / Search / Bookmarks as labelled rows
+     - turn off the ribbon for the full effect (Settings -> Appearance -> "Show ribbon")
+     - the Files row gets a hover "..." menu from the companion plugin
+       "Contemporary Theme Settings"
 */
 
-body {
-  /* ---- Typography ---- */
-  /* --font-text: "Your font", serif; */
-  /* --font-interface: "Your font", sans-serif; */
-  /* --font-monospace: "Your font", monospace; */
-  /* --font-text-size: 16px; */
+/* =========================================================================
+   1. Pill tabs (main editor area)
+   ========================================================================= */
 
-  /* ---- Layout / shape ---- */
-  /* --radius-s: 4px; */
-  /* --radius-m: 8px; */
-  /* --radius-l: 12px; */
-  /* --line-width: 2px; */
-  /* --line-width-hover: 3px; */
+.workspace-tab-header-container {
+  border-bottom: 0; /* no hairline under the tab bar */
 }
 
-.theme-light {
-  /* ---- Backgrounds ---- */
-  /* --background-primary: #ffffff; */
-  /* --background-primary-alt: #f8f8f8; */
-  /* --background-secondary: #f2f3f5; */
-  /* --background-secondary-alt: #e9e9e9; */
-  /* --background-modifier-border: #dadada; */
-  /* --background-modifier-hover: rgba(0, 0, 0, 0.05); */
-
-  /* ---- Text ---- */
-  /* --text-normal: #2e3338; */
-  /* --text-muted: #6e6e6e; */
-  /* --text-faint: #999999; */
-  /* --text-on-accent: #ffffff; */
-
-  /* ---- Interactive / accent ---- */
-  /* --interactive-normal: #f2f3f5; */
-  /* --interactive-hover: #e9e9e9; */
-  /* --interactive-accent: #7c3aed; */
-  /* --interactive-accent-hover: #6d28d9; */
-
-  /* ---- Chrome (title bar, ribbon, status bar) ---- */
-  /* --titlebar-background: var(--background-primary); */
-  /* --ribbon-background: var(--background-secondary); */
-  /* --status-bar-background: var(--background-secondary); */
+/* Remove Obsidian's folder-tab curves and the divider between tabs */
+.workspace .mod-root .workspace-tab-header::before,
+.workspace .mod-root .workspace-tab-header::after,
+.workspace .mod-root .workspace-tab-header.is-active::before,
+.workspace .mod-root .workspace-tab-header.is-active::after,
+.workspace .mod-root .workspace-tab-header-inner::after {
+  display: none;
+  box-shadow: none;
 }
 
-.theme-dark {
-  /* ---- Backgrounds ---- */
-  /* --background-primary: #1e1e1e; */
-  /* --background-primary-alt: #191919; */
-  /* --background-secondary: #171717; */
-  /* --background-secondary-alt: #212121; */
-  /* --background-modifier-border: #2a2a2a; */
-  /* --background-modifier-hover: rgba(255, 255, 255, 0.05); */
+.workspace .mod-root .workspace-tab-header,
+.workspace .mod-root .workspace-tab-header.is-active {
+  background: transparent;
+  box-shadow: none;
+}
 
-  /* ---- Text ---- */
-  /* --text-normal: #dcddde; */
-  /* --text-muted: #999999; */
-  /* --text-faint: #666666; */
-  /* --text-on-accent: #ffffff; */
+.workspace .mod-root .workspace-tab-header-inner {
+  border-radius: var(--radius-m);
+  border: 1px solid transparent;
+  transition: background-color 0.12s ease, border-color 0.12s ease;
+}
 
-  /* ---- Interactive / accent ---- */
-  /* --interactive-normal: #2a2a2a; */
-  /* --interactive-hover: #333333; */
-  /* --interactive-accent: #7c3aed; */
-  /* --interactive-accent-hover: #8b5cf6; */
+/* The active tab is the soft card */
+.workspace .mod-root .workspace-tab-header.is-active .workspace-tab-header-inner {
+  background-color: var(--background-primary-alt);
+  border-color: var(--background-modifier-border);
+}
 
-  /* ---- Chrome (title bar, ribbon, status bar) ---- */
-  /* --titlebar-background: var(--background-primary); */
-  /* --ribbon-background: var(--background-secondary); */
-  /* --status-bar-background: var(--background-secondary); */
+@media (hover: hover) {
+  .workspace .mod-root .workspace-tab-header:not(.is-active):hover .workspace-tab-header-inner {
+    background-color: var(--background-modifier-hover);
+  }
+}
+
+.workspace .mod-root .workspace-tab-header-inner-title {
+  font-weight: 500;
+}
+
+.workspace .mod-root .workspace-tab-header.is-active .workspace-tab-header-inner-title {
+  color: var(--text-normal);
+}
+
+/* =========================================================================
+   2. Left sidebar: Files / Search / Bookmarks as labelled rows
+   ========================================================================= */
+
+.mod-left-split {
+  --sidebar-tab-text-display: block; /* Obsidian hides sidebar tab titles via this variable */
+}
+
+/* Every tab group in the left sidebar lists its tabs as vertical rows */
+.mod-left-split .workspace-tabs.mod-top > .workspace-tab-header-container {
+  height: auto;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 0 var(--size-4-2) var(--size-4-2);
+}
+
+/* Only the topmost group sits under the window controls: reserve that row for them.
+   !important on padding-left because Obsidian's macOS rule (traffic-light inset) is
+   as specific as this one. */
+.mod-left-split .workspace-tabs.mod-top-left-space > .workspace-tab-header-container {
+  padding-top: var(--header-height);
+  padding-left: var(--size-4-2) !important;
+}
+
+/* The sidebar toggle is a flex child of that container; pin it to the top row instead */
+.mod-left-split .workspace-tabs.mod-top-left-space > .workspace-tab-header-container > .sidebar-toggle-button {
+  position: absolute;
+  top: 0;
+  right: var(--size-4-2);
+}
+
+.mod-left-split .workspace-tabs.mod-top .workspace-tab-header-container-inner {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 1px;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+}
+
+.mod-left-split .workspace-tabs.mod-top .workspace-tab-header {
+  width: 100%;
+  height: var(--size-4-8);
+  border-radius: var(--radius-m);
+}
+
+.mod-left-split .workspace-tabs.mod-top .workspace-tab-header-inner {
+  gap: var(--size-4-2);
+  padding: 0 var(--size-4-2);
+}
+
+.mod-left-split .workspace-tabs.mod-top .workspace-tab-header-inner-title {
+  font-size: var(--font-ui-small);
+  color: var(--text-muted);
+}
+
+.mod-left-split .workspace-tabs.mod-top .workspace-tab-header.is-active {
+  background-color: transparent; /* the list is navigation, not a selection */
+}
+
+.mod-left-split .workspace-tabs.mod-top .workspace-tab-header.is-active .workspace-tab-header-inner-title {
+  color: var(--text-normal);
+}
+
+@media (hover: hover) {
+  .mod-left-split .workspace-tabs.mod-top .workspace-tab-header:hover {
+    background-color: var(--background-modifier-hover);
+  }
+}
+
+/* The "new tab"/list buttons beside the icon strip have no place in a list */
+.mod-left-split .workspace-tabs.mod-top .workspace-tab-header-new-tab,
+.mod-left-split .workspace-tabs.mod-top .workspace-tab-header-tab-list {
+  display: none;
 }
