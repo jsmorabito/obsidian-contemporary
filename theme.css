@@ -11,6 +11,7 @@ Changes so far:
      - turn off the ribbon for the full effect (Settings -> Appearance -> "Show ribbon")
      - the Files row gets a hover "..." menu from the companion plugin
        "Contemporary Theme Settings"
+  3. Right sidebar: a widget alone in its pane shows its name next to its icon
 */
 
 /* =========================================================================
@@ -137,4 +138,37 @@ Changes so far:
 .mod-left-split .workspace-tabs.mod-top .workspace-tab-header-new-tab,
 .mod-left-split .workspace-tabs.mod-top .workspace-tab-header-tab-list {
   display: none;
+}
+
+/* =========================================================================
+   3. Right sidebar: a widget alone in its pane shows its name
+   ========================================================================= */
+
+/* A tab header that is the only one in its group gets a label; groups with several
+   tabs stay icon-only. Moving widgets between panes adds/removes the label by itself. */
+.mod-right-split .workspace-tab-header:only-child {
+  width: auto;
+}
+
+/* No fill: a lone header is a title, not a button. Obsidian fills the active, hovered and
+   menu-open states separately (some at higher specificity), so each is listed. */
+.mod-right-split .workspace-tab-header:only-child,
+.mod-right-split .workspace-tab-header.is-active:only-child,
+.mod-right-split .workspace-tab-header.has-active-menu:only-child,
+.mod-right-split .workspace-tab-header:only-child:hover,
+.mod-right-split .workspace-tab-header.is-active:only-child:hover,
+.mod-right-split .workspace-tab-header.has-active-menu:only-child:hover {
+  background-color: transparent;
+}
+
+.mod-right-split .workspace-tab-header:only-child .workspace-tab-header-inner {
+  gap: var(--size-4-2); /* icon-to-label space; matches the left sidebar rows */
+  padding: 0 var(--size-4-2);
+}
+
+.mod-right-split .workspace-tab-header:only-child .workspace-tab-header-inner-title {
+  display: block;
+  font-size: var(--font-ui-small);
+  font-weight: 600;
+  color: var(--text-normal);
 }
