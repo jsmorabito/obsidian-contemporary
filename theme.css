@@ -87,11 +87,12 @@ Changes so far:
 }
 
 /* Only the topmost group sits under the window controls: reserve that row for them.
-   !important on padding-left because Obsidian's macOS rule (traffic-light inset) is
-   as specific as this one. */
-.mod-left-split .workspace-tabs.mod-top-left-space > .workspace-tab-header-container {
+   The leading `body` makes this one element more specific than Obsidian's macOS rule
+   that insets the container by the traffic-light width, so padding-left wins without
+   needing to force it. */
+body .workspace .mod-left-split .workspace-tabs.mod-top-left-space > .workspace-tab-header-container {
   padding-top: var(--header-height);
-  padding-left: var(--size-4-2) !important;
+  padding-left: var(--size-4-2);
 }
 
 /* The sidebar toggle is a flex child of that container; pin it to the top row instead */
@@ -183,7 +184,7 @@ Changes so far:
    4. Pinned tabs shrink to icon-only
    ========================================================================= */
 
-/* Specificity here (4 classes) beats Obsidian's max-width rule (3), so no !important. */
+/* Specificity here (4 classes) beats Obsidian's max-width rule (3), so nothing needs forcing. */
 .workspace .mod-root .workspace-tab-header:has(.mod-pinned) {
   max-width: 48px;
 }
