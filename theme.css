@@ -47,8 +47,13 @@ Changes so far:
 
 /* The active tab is the soft card */
 .workspace .mod-root .workspace-tab-header.is-active .workspace-tab-header-inner {
-  background-color: var(--background-primary-alt);
+  background-color: var(--background-primary);
   border-color: var(--background-modifier-border);
+}
+
+/* Inactive tabs carry a barely-there neutral fill (adapts to light and dark), tinted on hover */
+.workspace .mod-root .workspace-tab-header:not(.is-active) .workspace-tab-header-inner {
+  background-color: var(--background-primary-alt);
 }
 
 @media (hover: hover) {
