@@ -1,5 +1,7 @@
 # Contemporary
 
+![Contemporary theme](screenshot.png)
+
 An Obsidian theme, built up one change at a
 time. See the header of `theme.css` for what's in so far.
 
@@ -22,36 +24,23 @@ so Obsidian picks it up automatically:
 
 Reference for available variables: https://docs.obsidian.md/Reference/CSS+variables
 
-## Publishing to GitHub
+## Releasing
 
-```bash
-cd "/Users/johnmorabito/Documents/Dev Vault/.obsidian/themes/Contemporary"
-gh repo create jsmorabito/obsidian-contemporary --public --source=. --remote=origin
-git push -u origin main
-```
+The community directory installs from GitHub releases, so each version needs one:
 
-## Submitting to the Obsidian community theme browser
+1. Bump `version` in `manifest.json` (x.y.z) and commit.
+2. Create a release whose tag matches that version, with `manifest.json` and `theme.css`
+   attached:
 
-Once the theme is in a good state:
-
-1. Make sure `manifest.json` and `theme.css` are at the **root** of the repo (they are,
-   here) and `version` in `manifest.json` is bumped.
-2. Add a screenshot (`screenshot.png`, ~1024px wide) showing the theme in use.
-3. Fork [obsidianmd/obsidian-releases](https://github.com/obsidianmd/obsidian-releases)
-   and add an entry to `community-css-themes.json`:
-
-   ```json
-   {
-     "name": "Contemporary",
-     "author": "jsmorabito",
-     "repo": "jsmorabito/obsidian-contemporary",
-     "screenshot": "screenshot.png",
-     "modes": ["dark", "light"]
-   }
+   ```bash
+   gh release create X.Y.Z manifest.json theme.css --title "X.Y.Z" --notes "What changed"
    ```
 
-4. Open a PR against `obsidian-releases`. The bundled bot checks your repo structure
-   automatically (manifest fields, license, root-level files).
-5. `LICENSE` (MIT) is included, which is required for submission.
+## Submitting to the Obsidian community directory
+
+1. Sign in at [community.obsidian.md](https://community.obsidian.md) and link your GitHub
+   account.
+2. Add the theme. The repo needs `README.md`, `LICENSE`, `manifest.json`, `theme.css` and a
+   screenshot (`screenshot.png`, 512 x 288 recommended) in place, plus the release above.
 
 Full guidelines: https://docs.obsidian.md/Themes/App+themes/Submit+your+theme
