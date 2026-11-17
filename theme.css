@@ -12,6 +12,7 @@ Changes so far:
      - the Files row gets a hover "..." menu from the companion plugin
        "Contemporary Theme Settings"
   3. Right sidebar: a widget alone in its pane shows its name next to its icon
+  4. Pinned tabs shrink to icon-only
 */
 
 /* =========================================================================
@@ -171,4 +172,19 @@ Changes so far:
   font-size: var(--font-ui-small);
   font-weight: 600;
   color: var(--text-normal);
+}
+
+/* =========================================================================
+   4. Pinned tabs shrink to icon-only
+   ========================================================================= */
+
+/* Specificity here (4 classes) beats Obsidian's max-width rule (3), so no !important. */
+.workspace .mod-root .workspace-tab-header:has(.mod-pinned) {
+  max-width: 48px;
+}
+
+.workspace .mod-root .workspace-tab-header:has(.mod-pinned) .workspace-tab-header-inner-title,
+.workspace .mod-root .workspace-tab-header:has(.mod-pinned) .workspace-tab-header-inner-close-button,
+.workspace .mod-root .workspace-tab-header:has(.mod-pinned) .workspace-tab-header-status-container .workspace-tab-header-status-icon {
+  display: none;
 }
