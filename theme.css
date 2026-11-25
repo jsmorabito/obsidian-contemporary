@@ -11,6 +11,7 @@ Changes so far:
      - turn off the ribbon for the full effect (Settings -> Appearance -> "Show ribbon")
      - the Files row gets a hover "..." menu from the companion plugin
        "Contemporary Theme Settings"
+     - the sidebar toggle stays in the same spot whether the sidebar is open or closed
   3. Right sidebar: a widget alone in its pane shows its name next to its icon
   4. Pinned tabs shrink to icon-only
 */
@@ -95,11 +96,58 @@ body .workspace .mod-left-split .workspace-tabs.mod-top-left-space > .workspace-
   padding-left: var(--size-4-2);
 }
 
-/* The sidebar toggle is a flex child of that container; pin it to the top row instead */
+/* The sidebar toggle is a flex child of that container; pin it to the top row instead.
+   Obsidian moves this one button into the main tab bar when the sidebar collapses, where it
+   sits just past the window controls. Use the same left offset here so it stays put when the
+   sidebar opens, instead of jumping to the sidebar's right edge. */
 .mod-left-split .workspace-tabs.mod-top-left-space > .workspace-tab-header-container > .sidebar-toggle-button {
   position: absolute;
   top: 0;
-  right: var(--size-4-2);
+  left: var(--size-4-2);
+}
+
+/* Frameless window (not fullscreen): clear the traffic lights the same way Obsidian does */
+.is-hidden-frameless:not(.is-fullscreen) .mod-left-split .workspace-tabs.mod-top-left-space > .workspace-tab-header-container > .sidebar-toggle-button {
+  left: calc(var(--size-4-2) + var(--frame-left-space));
+}
+
+/* Pin the toggle's icon to the window, so it never moves.
+   When the sidebar opens or closes, Obsidian moves the button between the sidebar and the
+   main tab bar and animates the move with inline margin-left/left: on open it leaves a
+   copy behind that slides away, on close it slides the real button in from the left.
+   Inline styles beat the theme, so the button box itself can't be held still. Its icon can:
+   a fixed child ignores whatever the box does.
+   Its window x is where the main tab bar puts it when the sidebar is closed: past the ribbon,
+   plus the tab bar's left padding (Obsidian's rules, mirrored above for the open sidebar).
+   Scope:
+   - only where the tab bar is the top of the window: not with Obsidian's own drawn title bar
+     ("is-frameless" without "is-hidden-frameless"), which sits above it
+   - not right-to-left, where Obsidian moves the button to the far end of the tab bar
+   - the selector needs the tab bar as parent, so it skips the button when it lives in the
+     ribbon (ribbon shown and not macOS) */
+body:is(:not(.is-frameless), .is-hidden-frameless, .is-fullscreen):not(.mod-rtl) .workspace-tab-header-container > .sidebar-toggle-button.mod-left {
+  width: var(--size-4-8); /* the icon is out of flow now; keep the box's space in the tab bar */
+}
+
+body:is(:not(.is-frameless), .is-hidden-frameless, .is-fullscreen):not(.mod-rtl) .workspace-tab-header-container > .sidebar-toggle-button.mod-left > .clickable-icon {
+  position: fixed;
+  top: var(--size-4-2); /* same as the button's own top padding */
+  left: calc(var(--ribbon-width) + var(--size-4-2));
+  z-index: var(--layer-cover);
+}
+
+/* Frameless window (not fullscreen): the tab bar also clears the window controls */
+body.is-hidden-frameless:not(.is-fullscreen):not(.mod-rtl) .workspace-tab-header-container > .sidebar-toggle-button.mod-left > .clickable-icon {
+  left: calc(var(--ribbon-width) + var(--frame-left-space) + var(--size-4-2));
+}
+
+/* While the sidebar opens, Obsidian's leftover copy sits in the main tab bar for the length
+   of its animation. With the icon pinned, the copy would cover the real icon: showing the old
+   state and swallowing clicks (the copy has no click handler). Hide it. The :has() check keeps
+   the real button visible when Obsidian leaves it in the main tab bar (sidebar open but its
+   top pane isn't a tab group, so there's nowhere to move it). */
+.workspace.is-left-sidedock-open:has(.mod-left-split .workspace-tab-header-container > .sidebar-toggle-button.mod-left) .mod-root .workspace-tab-header-container > .sidebar-toggle-button.mod-left > .clickable-icon {
+  visibility: hidden;
 }
 
 .mod-left-split .workspace-tabs.mod-top .workspace-tab-header-container-inner {
